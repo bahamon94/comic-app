@@ -1,26 +1,35 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <Rating  :calificacion="calificacion" @seleccion-calificar="generarCalificacion" />
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import { onBeforeUnmount, reactive, toRefs } from '@vue/runtime-core';
+import Rating from "./components/component_Rating";
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    Rating
+  },
+  setup(){
+    onBeforeUnmount(() => { document.body.className = 'home' })
+
+    const state = reactive({
+      calificacion: 0
+    })
+
+    function generarCalificacion(value) {
+      if (typeof value.cantidad === 'number' && value.cantidad <= value.max && value.cantidad >= 0 ) {
+        state.calificacion = state.calificacion === value.cantidad ? value.cantidad -1 : value.cantidad
+      }
+
+    }
+
+   return { ...toRefs(state), generarCalificacion }
   }
+ 
 }
 </script>
 
 <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
 </style>
