@@ -37,11 +37,10 @@ import { reactive, toRefs } from 'vue'
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 50px;
+    padding: 10px;
     color: #b7b7b7;
     background: #fff;
     border-radius: 8px;
-    box-shadow: 0 6px 33px rgba(19, 18, 18, 0.09);
     .list {
         padding: 0;
         margin: 0 20px 0 0;
