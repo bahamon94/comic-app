@@ -1,5 +1,5 @@
 <template>
-<div class="flex items-center justify-center p-7 bg-gray-50 ">
+<div class="flex items-center justify-center bg-yellow-600 p-7">
   <div class="max-w-3xl p-4 bg-white border border-gray-200 rounded-xl">
     <h1 class="block mt-3 text-3xl font-semibold leading-snug text-center text-black ">
       Woodpecker
@@ -16,6 +16,7 @@
 <script>
 import { onBeforeUnmount, onMounted, reactive, toRefs, watch } from '@vue/runtime-core';
 import Rating from "./components/component_Rating";
+import axios from 'axios'
 
 export default {
   name: 'App',
@@ -37,23 +38,15 @@ export default {
 
     }
 
-    async function traerInfoComic(numeroComic) {
-  //      const requestOptions = {
-  //           method: 'GET',
-  //           headers: {'Access-Control-Allow-Origin':'*'
-  // }
-  //      }
-      const URL = `https://xkcd.com/${numeroComic}/info.0.json`
-     let headers = {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': true,
-};
+     function traerInfoComic(numeroComic) {
+     let headers = { "mode": "no-cors" };
+
       
-       fetch(URL, headers).then( respuesta => {
-         console.log('respuestas', respuesta);
-       })
-     
-      return
+      const request = new Request(`https://xkcd.com/${numeroComic}/info.0.json`, headers)
+      
+     fetch(request).then( response => Cache.put(request, response) )
+      // let { title, img } = await comic.json()
+      //  
       
     }
 
@@ -61,7 +54,8 @@ export default {
 
    async function generarAleatorio() {
       let numeroComic =( Math.random()*1000).toFixed()
-      state.srcImageComic = await traerInfoComic(numeroComic)
+      let respuesta  = await traerInfoComic(numeroComic)
+      console.log(respuesta);
     }
 
     // watch(
